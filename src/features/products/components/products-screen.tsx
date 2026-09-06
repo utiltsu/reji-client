@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { EmptyState } from "@/components/shared/empty-state";
+import { ProductImage } from "@/components/shared/product-image";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts, type Product } from "@/hooks/use-products";
@@ -158,9 +159,12 @@ type ProductListItemProps = {
 
 function ProductListItem({ isSelected, onSelect, product }: ProductListItemProps) {
   return (
-    <Button className="h-auto min-h-28 flex-col items-start gap-3 whitespace-normal p-4 text-left" onClick={onSelect} variant={isSelected ? "default" : "outline"}>
-      <span className="w-full truncate text-base font-semibold">{product.name}</span>
-      <span className="text-sm opacity-80">{formatCurrency(product.price)}</span>
+    <Button className="h-auto min-h-28 items-center gap-3 whitespace-normal p-3 text-left" onClick={onSelect} variant={isSelected ? "default" : "outline"}>
+      <ProductImage alt={product.name} className="size-14" src={product.imageUrl} />
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-base font-semibold">{product.name}</span>
+        <span className="mt-1 block text-sm opacity-80">{formatCurrency(product.price)}</span>
+      </span>
     </Button>
   );
 }

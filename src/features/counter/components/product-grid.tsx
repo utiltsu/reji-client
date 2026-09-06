@@ -1,6 +1,7 @@
 "use client";
 
 import { Package, RefreshCw } from "lucide-react";
+import { ProductImage } from "@/components/shared/product-image";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -48,15 +49,19 @@ export function ProductGrid({ error, isLoading, onAddProduct, onRetry, products 
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {products.map((product) => (
         <Button
-          className="h-auto min-h-36 flex-col items-start justify-between gap-6 whitespace-normal p-5 text-left"
+          className="h-auto min-h-48 flex-col items-start justify-between gap-4 whitespace-normal p-5 text-left"
           key={product.id}
           onClick={() => onAddProduct(product.id)}
           variant="outline"
         >
           <span className="flex w-full items-center justify-between gap-3">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Package />
-            </span>
+            {product.imageUrl ? (
+              <ProductImage alt={product.name} className="size-14" src={product.imageUrl} />
+            ) : (
+              <span className="flex size-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Package />
+              </span>
+            )}
             <span className="text-base font-semibold text-foreground">{formatCurrency(product.price)}</span>
           </span>
           <span className="w-full text-base font-medium text-foreground">{product.name}</span>

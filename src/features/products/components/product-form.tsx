@@ -2,7 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { ProductImage } from "@/components/shared/product-image";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
@@ -28,6 +29,8 @@ export function ProductForm({ defaultValues, idPrefix, isEditing, isPending, onS
   const nameError = form.formState.errors.name;
   const priceError = form.formState.errors.price;
   const imageUrlError = form.formState.errors.imageUrl;
+  const imageUrl = useWatch({ control: form.control, name: "imageUrl" });
+  const productName = useWatch({ control: form.control, name: "name" });
 
   async function handleSubmit(values: ProductFormValues) {
     setErrorMessage(null);
@@ -62,6 +65,10 @@ export function ProductForm({ defaultValues, idPrefix, isEditing, isPending, onS
         <FieldDescription>Optional. Use a public product image URL.</FieldDescription>
         <FieldError errors={imageUrlError ? [imageUrlError] : undefined} />
       </Field>
+      <div className="flex items-center gap-3 rounded-xl border bg-muted/30 p-3">
+        <ProductImage alt={productName.trim() || "Product"} className="size-16" src={imageUrl.trim() || null} />
+        <p className="text-sm text-muted-foreground">Image preview</p>
+      </div>
       {isEditing ? (
         <Controller
           control={form.control}
