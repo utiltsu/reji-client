@@ -37,7 +37,7 @@ type CheckoutLine = {
   quantity: number;
 };
 
-type CheckoutPanelProps = {
+export type CheckoutPanelProps = {
   isCartLocked: boolean;
   items: CheckoutLine[];
   onAddProduct: (productId: string) => void;
@@ -315,7 +315,7 @@ function PromptPayPreparationView({
         Payment is not verified automatically. Confirm the payment notification on the shop phone before submitting.
       </p>
       {errorMessage ? <p className="text-sm text-destructive" role="alert">{errorMessage}</p> : null}
-      <div className="flex flex-col gap-2">
+      <div className="sticky bottom-0 -mx-5 flex flex-col gap-2 bg-card/95 px-5 pb-1 pt-3 backdrop-blur">
         <Button className="w-full" disabled={isPending} onClick={() => void onSubmit()}>
           {isPending ? "Submitting sale…" : "Submit sale"}
         </Button>

@@ -6,11 +6,13 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts } from "@/hooks/use-products";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { getApiErrorMessage } from "@/lib/errors";
 import { CloseSessionForm } from "./close-session-form";
 import { CheckoutPanel } from "./checkout-panel";
 import { OpenSessionForm } from "./open-session-form";
 import { ProductGrid } from "./product-grid";
+import { MobileCartSheet } from "./mobile-cart-sheet";
 import { useCart } from "../hooks/use-cart";
 import { useCloseCashSession } from "../hooks/use-close-cash-session";
 import { useCurrentCashSession } from "../hooks/use-current-cash-session";
@@ -24,6 +26,8 @@ export function CounterScreen() {
   const currentSession = useCurrentCashSession();
   const openSession = useOpenCashSession();
   const closeSession = useCloseCashSession();
+  const isMobile = useIsMobile();
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCartLocked, setIsCartLocked] = useState(false);
   const session = currentSession.data;
 
@@ -133,7 +137,7 @@ export function CounterScreen() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-6 px-6 py-8">
+    <div className="mx-auto w-full max-w-7xl space-y-6 px-6 py-8 pb-24 lg:pb-8">
       <header className="flex flex-col justify-between gap-4 border-b pb-6 sm:flex-row sm:items-end">
         <div>
           <p className="text-sm font-medium text-primary">Counter</p>
@@ -159,18 +163,20 @@ export function CounterScreen() {
             products={products.data ?? []}
           />
         </section>
-        <aside className="h-fit rounded-2xl border bg-card p-5 shadow-sm">
-          <CheckoutPanel
-            isCartLocked={isCartLocked}
-            items={cartItems}
-            onAddProduct={cart.addProduct}
-            onClear={handleClearCart}
-            onDecreaseProduct={cart.decreaseProduct}
-            onLockCart={setIsCartLocked}
-            onRemoveProduct={cart.removeProduct}
-            total={total}
-          />
-        </aside>
+        {!isMobile ? (
+          <aside className="h-fit rounded-2xl border bg-card p-5 shadow-sm">
+            <CheckoutPanel
+              isCartLocked={isCartLocked}
+              items={cartItems}
+              onAddProduct={cart.addProduct}
+              onClear={handleClearCart}
+              onDecreaseProduct={cart.decreaseProduct}
+              onLockCart={setIsCartLocked}
+              onRemoveProduct={cart.removeProduct}
+              total={total}
+            />
+          </aside>
+        ) : null}
       </div>
 
       <section className="rounded-2xl border bg-card p-6 shadow-sm">
@@ -180,6 +186,22 @@ export function CounterScreen() {
         </p>
         <CloseSessionForm isPending={closeSession.isPending} onSubmit={handleCloseSession} />
       </section>
+      {isMobile ? (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-card lg:hidden">
+          <MobileCartSheet
+            isCartLocked={isCartLocked}
+            isOpen={isCartOpen}
+            items={cartItems}
+            onAddProduct={cart.addProduct}
+            onClear={handleClearCart}
+            onDecreaseProduct={cart.decreaseProduct}
+            onLockCart={setIsCartLocked}
+            onOpenChange={setIsCartOpen}
+            onRemoveProduct={cart.removeProduct}
+            total={total}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
