@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { isAllowedBffPath } from "@/lib/bff-allowlist";
 import { upstreamFetch } from "@/lib/upstream";
@@ -9,8 +10,8 @@ async function proxy(request: Request, context: RouteContext) {
   const resourcePath = path.join("/");
   if (!isAllowedBffPath(resourcePath)) return NextResponse.json({ message: "ไม่พบเส้นทาง" }, { status: 404 });
   const requestUrl = new URL(request.url);
-  // Replace this request-header seam with the app's server-side session adapter.
-  const accessToken = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("reji-access-token")?.value;
   const response = await upstreamFetch(`/api/v1/${resourcePath}${requestUrl.search}`, accessToken, {
     method: request.method,
     headers: { Accept: "application/json", "X-Request-Id": request.headers.get("x-request-id") ?? crypto.randomUUID() },

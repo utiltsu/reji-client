@@ -1,0 +1,61 @@
+"use client";
+
+import type { ReactNode } from "react";
+import Link from "next/link";
+import { AppShell } from "@/components/shared/app-shell";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSession } from "../hooks/use-session";
+import type { AuthenticatedSession, Session } from "../schemas";
+
+type SessionGuardProps = {
+  children: ReactNode;
+};
+
+export function SessionGuard({ children }: SessionGuardProps) {
+  const session = useSession();
+  const sessionData = session.data;
+
+  if (session.isLoading) {
+    return <Skeleton className="min-h-screen rounded-none" />;
+  }
+
+  if (session.isError) {
+    return (
+      <main className="flex min-h-screen items-center justify-center px-6">
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
+          <p className="text-red-800">ตรวจสอบสิทธิ์การเข้าใช้งานไม่สำเร็จ</p>
+          <Button className="mt-4" onClick={() => void session.refetch()} variant="outline">
+            ลองอีกครั้ง
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
+  if (!isAuthenticatedSession(sessionData)) {
+    return (
+      <main className="flex min-h-screen items-center justify-center px-6">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+          <p className="text-slate-700">กรุณาเข้าสู่ระบบก่อนใช้งาน</p>
+          <Link className="mt-4 inline-block text-sm font-medium text-amber-700 underline" href="/">
+            ไปหน้าเข้าสู่ระบบ
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  const authenticatedSession = sessionData;
+  return (
+    <AppShell name={authenticatedSession.name} role={authenticatedSession.role}>
+      {children}
+    </AppShell>
+  );
+}
+
+function isAuthenticatedSession(
+  value: Session | undefined,
+): value is AuthenticatedSession {
+  return Boolean(value?.authenticated && value.role && value.name);
+}

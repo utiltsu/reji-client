@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Providers } from "./providers";
 import "./globals.css";
 
-export const metadata: Metadata = { title: "Next.js BFF Boilerplate", description: "Client-first Next.js boilerplate for an upstream API" };
+export const metadata: Metadata = { title: "Reji", description: "ระบบขายหน้าร้านสำหรับร้านเบเกอรี่" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body><Providers>{children}</Providers></body></html>;
+  return <html lang="th"><body><Providers>{children}</Providers></body></html>;
 }

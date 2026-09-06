@@ -1,5 +1,5 @@
-import { TasksScreen } from "@/features/tasks/components/tasks-screen";
+import { LoginScreen } from "@/features/auth/components/login-screen";
 
 export default function HomePage() {
-  return <TasksScreen />;
+  return <LoginScreen />;
 }
