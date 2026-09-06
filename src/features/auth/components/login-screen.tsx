@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ApiError } from "@/lib/errors";
 import { useLogin } from "../hooks/use-login";
 
@@ -32,8 +32,8 @@ export function LoginScreen() {
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <Label htmlFor="pin">PIN</Label>
+          <Field data-invalid={Boolean(errorMessage)}>
+            <FieldLabel htmlFor="pin">PIN</FieldLabel>
             <Input
               aria-describedby={errorMessage ? "login-error" : undefined}
               aria-invalid={Boolean(errorMessage)}
@@ -47,13 +47,8 @@ export function LoginScreen() {
               type="password"
               value={pin}
             />
-          </div>
-
-          {errorMessage ? (
-            <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800" id="login-error">
-              {errorMessage}
-            </p>
-          ) : null}
+            {errorMessage ? <FieldError id="login-error">{errorMessage}</FieldError> : null}
+          </Field>
 
           <Button className="w-full" disabled={pin.length !== 4 || login.isPending} type="submit">
             {login.isPending ? "Signing in…" : "Sign in"}

@@ -412,21 +412,23 @@ dropdowns are the most common avoidable duplication in a Next.js codebase.
 No imports from `features/`. No data-fetching hooks. No domain types. If a file in `ui/`
 mentions `Sale`, it is in the wrong folder.
 
-### 8.5 Form controls use shadcn/ui
+### 8.5 Forms use shadcn/ui Field composition
 
-All user-facing form controls must use the shadcn/ui primitives in `components/ui/` as their
-base. Feature components must not render raw `<input>`, `<textarea>`, `<select>`, checkbox, or
-radio controls directly.
+Every user-facing form field must use the shadcn/ui `Field` family as its structure. Feature
+components must not render raw `<input>`, `<textarea>`, `<select>`, checkbox, or radio controls
+directly.
 
-- Use the shadcn/ui field primitives (`Field`, `FieldLabel`, `FieldDescription`, and
-  `FieldError`) to structure form fields and display validation state.
-- Use the matching shadcn/ui control such as `Input`, `Textarea`, `Select`, `Checkbox`, or
-  `RadioGroup` inside the field structure. When a form wrapper is needed, compose these
-  primitives with react-hook-form rather than creating a parallel form-control system.
+- Use `Field` for each individual field.
+- Use `FieldLabel` for the accessible label and place the matching shadcn/ui control beneath it,
+  such as `Input`, `Textarea`, `Select`, `Checkbox`, or `RadioGroup`.
+- Use `FieldDescription` for helper text and `FieldError` for validation errors.
+- Set `data-invalid` on `Field` and `aria-invalid` on the control when the field is invalid.
+- Use `FieldGroup` for related fields and `FieldSet`/`FieldLegend` for semantic groups.
+- Compose `Field` primitives with react-hook-form; do not create a parallel form-control system.
 - Install a shadcn/ui primitive one at a time, only when the first screen needs it.
 - Keep domain behavior, data fetching, and feature-specific composition outside
   `components/ui/`; wrap primitives in a feature or shared component when needed.
-- The `Button` primitive is also the base for form submission and action buttons.
+- The `Button` primitive is the base for form submission and action buttons.
 - A native control is allowed only when shadcn/ui has no equivalent and the exception is noted
   in the feature implementation.
 
