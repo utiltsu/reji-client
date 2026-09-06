@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
   if (!isPinLoginResponse(body)) {
     return NextResponse.json(
-      { code: "INVALID_UPSTREAM_RESPONSE", message: "บริการตอบกลับไม่ถูกต้อง" },
+      { code: "INVALID_UPSTREAM_RESPONSE", message: "The upstream service returned an invalid response" },
       { status: 502 },
     );
   }

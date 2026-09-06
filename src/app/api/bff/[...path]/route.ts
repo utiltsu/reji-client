@@ -8,7 +8,7 @@ type RouteContext = { params: Promise<{ path: string[] }> };
 async function proxy(request: Request, context: RouteContext) {
   const { path } = await context.params;
   const resourcePath = path.join("/");
-  if (!isAllowedBffPath(resourcePath)) return NextResponse.json({ message: "ไม่พบเส้นทาง" }, { status: 404 });
+  if (!isAllowedBffPath(resourcePath)) return NextResponse.json({ message: "Route not found" }, { status: 404 });
   const requestUrl = new URL(request.url);
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("reji-access-token")?.value;
@@ -17,7 +17,7 @@ async function proxy(request: Request, context: RouteContext) {
     headers: { Accept: "application/json", "X-Request-Id": request.headers.get("x-request-id") ?? crypto.randomUUID() },
     body: request.method === "GET" || request.method === "HEAD" ? undefined : request.body,
   });
-  const body: unknown = await response.json().catch(() => ({ message: "เกิดข้อผิดพลาดจากบริการ" }));
+  const body: unknown = await response.json().catch(() => ({ message: "The upstream service returned an invalid response" }));
   return NextResponse.json(body, { status: response.status, headers: { "X-Request-Id": response.headers.get("x-request-id") ?? "" } });
 }
 

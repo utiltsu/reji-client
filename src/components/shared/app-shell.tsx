@@ -25,20 +25,20 @@ export function AppShell({ children, name, role }: AppShellProps) {
             </span>
             <form action="/api/auth/logout" method="post">
               <button className="font-medium text-slate-700 underline-offset-4 hover:underline" type="submit">
-                ออกจากระบบ
+                Sign out
               </button>
             </form>
           </div>
         </div>
-        <nav aria-label="เมนูหลัก" className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-6 pb-3">
-          <NavLink href="/counter">ขายหน้าร้าน</NavLink>
-          <NavLink href="/day-end">ปิดวัน</NavLink>
+        <nav aria-label="Main navigation" className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-6 pb-3">
+          <NavLink href="/counter">Counter</NavLink>
+          <NavLink href="/day-end">Day end</NavLink>
           {isOwner ? (
             <>
-              <NavLink href="/catalog">สินค้า</NavLink>
-              <NavLink href="/production">การผลิต</NavLink>
-              <NavLink href="/expenses">ค่าใช้จ่าย</NavLink>
-              <NavLink href="/reports">รายงาน</NavLink>
+              <NavLink href="/catalog">Products</NavLink>
+              <NavLink href="/production">Production</NavLink>
+              <NavLink href="/expenses">Expenses</NavLink>
+              <NavLink href="/reports">Reports</NavLink>
             </>
           ) : null}
         </nav>

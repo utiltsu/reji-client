@@ -25,8 +25,8 @@ export function LoginScreen() {
       <section className="w-full max-w-sm rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
         <div className="mb-8">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">Reji</p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">เข้าสู่ระบบ</h1>
-          <p className="mt-2 text-sm text-slate-600">ใส่ PIN 4 หลักเพื่อเริ่มใช้งานหน้าร้าน</p>
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">Sign in</h1>
+          <p className="mt-2 text-sm text-slate-600">Enter your 4-digit PIN to start using the counter.</p>
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
@@ -53,7 +53,7 @@ export function LoginScreen() {
           ) : null}
 
           <Button className="w-full" disabled={pin.length !== 4 || login.isPending} type="submit">
-            {login.isPending ? "กำลังเข้าสู่ระบบ…" : "เข้าสู่ระบบ"}
+            {login.isPending ? "Signing in…" : "Sign in"}
           </Button>
         </form>
       </section>
@@ -63,16 +63,16 @@ export function LoginScreen() {
 
 function getLoginErrorMessage(error: Error | null): string | null {
   if (!(error instanceof ApiError)) {
-    return error ? "เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่" : null;
+    return error ? "Sign-in failed. Please try again." : null;
   }
 
   if (error.status === 423 || error.code === "LOCKED") {
-    return "PIN นี้ถูกล็อกชั่วคราว กรุณารอสักครู่แล้วลองใหม่";
+    return "This PIN is temporarily locked. Please wait and try again.";
   }
 
   if (error.status === 401) {
-    return "PIN ไม่ถูกต้อง";
+    return "Incorrect PIN.";
   }
 
-  return "เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่";
+  return "Sign-in failed. Please try again.";
 }

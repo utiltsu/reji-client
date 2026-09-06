@@ -517,7 +517,7 @@ content**. Skipping one is an incomplete component, not a shortcut.
 Each project **declares one UI language at kickoff** and records it here:
 
 ```
-UI language for this project: Thai
+UI language for this project: English
 ```
 
 Every user-facing string is written directly in that language, in the JSX. No i18n library, no
@@ -533,7 +533,7 @@ NestJS integration defaults:
 - Nest routes are `/api/v1/<plural-kebab-case-resource>`; the Next BFF route is `/api/bff/<resource>`.
 - OAuth scopes such as `tasks:read` are enforced by NestJS. The Next client does not duplicate permission or business-state rules.
 - Nest list responses are `{ data, meta }`; single resources are direct DTOs.
-- Nest errors use `code`, safe English `message`, optional `fieldErrors`, and `requestId`. The frontend maps codes/messages to Thai and places field errors on form fields.
+- Nest errors use `code`, safe English `message`, optional `fieldErrors`, and `requestId`. The frontend maps codes/messages to English and places field errors on form fields.
 - `X-Request-Id` is generated or propagated by the BFF and forwarded to NestJS.
 
 Add an i18n library **only if the project states a requirement for two or more languages at

@@ -24,9 +24,9 @@ export function SessionGuard({ children }: SessionGuardProps) {
     return (
       <main className="flex min-h-screen items-center justify-center px-6">
         <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
-          <p className="text-red-800">ตรวจสอบสิทธิ์การเข้าใช้งานไม่สำเร็จ</p>
+          <p className="text-red-800">Unable to verify your session.</p>
           <Button className="mt-4" onClick={() => void session.refetch()} variant="outline">
-            ลองอีกครั้ง
+            Try again
           </Button>
         </div>
       </main>
@@ -37,9 +37,9 @@ export function SessionGuard({ children }: SessionGuardProps) {
     return (
       <main className="flex min-h-screen items-center justify-center px-6">
         <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-          <p className="text-slate-700">กรุณาเข้าสู่ระบบก่อนใช้งาน</p>
+          <p className="text-slate-700">Please sign in to continue.</p>
           <Link className="mt-4 inline-block text-sm font-medium text-amber-700 underline" href="/">
-            ไปหน้าเข้าสู่ระบบ
+            Go to sign in
           </Link>
         </div>
       </main>
