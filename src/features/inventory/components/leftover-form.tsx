@@ -4,10 +4,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { DatePickerField } from "@/components/shared/date-picker-field";
 import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { applyApiErrorToForm, getApiErrorMessage } from "@/lib/errors";
 import { useRecordLeftover } from "../hooks/use-record-leftover";
@@ -48,7 +55,6 @@ export function LeftoverForm({ products }: LeftoverFormProps) {
     }
   }
 
-  const businessDateError = form.formState.errors.businessDate;
   const quantityError = form.formState.errors.quantity;
   const causeError = form.formState.errors.cause;
   const noteError = form.formState.errors.note;
@@ -56,12 +62,13 @@ export function LeftoverForm({ products }: LeftoverFormProps) {
   return (
     <form className="space-y-5" onSubmit={(event) => void form.handleSubmit(handleSubmit)(event)}>
       <ProductSelectField control={form.control} name="productId" products={products} />
-      <Field data-invalid={Boolean(businessDateError)}>
-        <FieldLabel htmlFor="leftover-business-date">Business date</FieldLabel>
-        <Input aria-invalid={Boolean(businessDateError)} id="leftover-business-date" type="date" {...form.register("businessDate")} />
-        <FieldDescription>Use the shop&apos;s Bangkok business date.</FieldDescription>
-        <FieldError errors={businessDateError ? [businessDateError] : undefined} />
-      </Field>
+      <DatePickerField
+        control={form.control}
+        description="Use the shop's Bangkok business date."
+        id="leftover-business-date"
+        label="Business date"
+        name="businessDate"
+      />
       <Field data-invalid={Boolean(quantityError)}>
         <FieldLabel htmlFor="leftover-quantity">Quantity</FieldLabel>
         <Input aria-invalid={Boolean(quantityError)} id="leftover-quantity" inputMode="numeric" min="1" step="1" type="number" {...form.register("quantity")} />

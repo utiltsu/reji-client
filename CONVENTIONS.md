@@ -428,6 +428,14 @@ directly.
 - Install a shadcn/ui primitive one at a time, only when the first screen needs it.
 - Keep domain behavior, data fetching, and feature-specific composition outside
   `components/ui/`; wrap primitives in a feature or shared component when needed.
+- Date fields must use the shadcn `Calendar` inside a `Popover` date picker. Never render
+  `<Input type="date">` in a feature form. Keep the form/API value as an ISO business-date
+  string (`YYYY-MM-DD`); the date-picker composition is responsible for converting between the
+  string and `Date`. Business-date screens must use the documented business timezone.
+- Use `Combobox` for searchable single-value selections, especially product or other lists that
+  can grow. Use `Select` only for short, fixed option lists where search adds no value. The
+  combobox input belongs inside the `Field` composition and carries `aria-invalid` and the
+  `FieldError` is rendered by the same field.
 - The `Button` primitive is the base for form submission and action buttons.
 - A native control is allowed only when shadcn/ui has no equivalent and the exception is noted
   in the feature implementation.

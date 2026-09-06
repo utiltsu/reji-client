@@ -7,12 +7,13 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 import type { Product } from "@/hooks/use-products";
 
 type ProductSelectFieldProps<TFieldValues extends FieldValues> = {
@@ -33,18 +34,29 @@ export function ProductSelectField<TFieldValues extends FieldValues>({
       render={({ field, fieldState }) => (
         <Field data-invalid={fieldState.invalid}>
           <FieldLabel htmlFor={`${String(name)}-product`}>Product</FieldLabel>
-          <Select onValueChange={(value) => field.onChange(value ?? "")} value={field.value as string}>
-            <SelectTrigger aria-invalid={fieldState.invalid} id={`${String(name)}-product`}>
-              <SelectValue placeholder="Select a product" />
-            </SelectTrigger>
-            <SelectContent>
-              {products.map((product) => (
-                <SelectItem key={product.id} value={product.id}>
-                  {product.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Combobox
+            itemToStringValue={(product) => product.name}
+            items={products}
+            onValueChange={(product) => field.onChange(product?.id ?? "")}
+            value={products.find((product) => product.id === field.value) ?? null}
+          >
+            <ComboboxInput
+              aria-invalid={fieldState.invalid}
+              id={`${String(name)}-product`}
+              placeholder="Search products"
+              showClear
+            />
+            <ComboboxContent>
+              <ComboboxEmpty>No products found.</ComboboxEmpty>
+              <ComboboxList>
+                {(product) => (
+                  <ComboboxItem key={product.id} value={product}>
+                    {product.name}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
           <FieldError errors={fieldState.error ? [fieldState.error] : undefined} />
         </Field>
       )}

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { DatePickerField } from "@/components/shared/date-picker-field";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -44,19 +45,19 @@ export function ProductionBatchForm({ products }: ProductionBatchFormProps) {
     }
   }
 
-  const businessDateError = form.formState.errors.businessDate;
   const quantityError = form.formState.errors.quantity;
   const costPerUnitError = form.formState.errors.costPerUnit;
 
   return (
     <form className="space-y-5" onSubmit={(event) => void form.handleSubmit(handleSubmit)(event)}>
       <ProductSelectField control={form.control} name="productId" products={products} />
-      <Field data-invalid={Boolean(businessDateError)}>
-        <FieldLabel htmlFor="production-business-date">Business date</FieldLabel>
-        <Input aria-invalid={Boolean(businessDateError)} id="production-business-date" type="date" {...form.register("businessDate")} />
-        <FieldDescription>Use the shop&apos;s Bangkok business date.</FieldDescription>
-        <FieldError errors={businessDateError ? [businessDateError] : undefined} />
-      </Field>
+      <DatePickerField
+        control={form.control}
+        description="Use the shop's Bangkok business date."
+        id="production-business-date"
+        label="Business date"
+        name="businessDate"
+      />
       <Field data-invalid={Boolean(quantityError)}>
         <FieldLabel htmlFor="production-quantity">Quantity produced</FieldLabel>
         <Input aria-invalid={Boolean(quantityError)} id="production-quantity" inputMode="numeric" min="1" step="1" type="number" {...form.register("quantity")} />
