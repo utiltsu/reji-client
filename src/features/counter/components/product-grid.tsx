@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
 import { getApiErrorMessage } from "@/lib/errors";
 import { formatCurrency } from "@/lib/format";
-import type { Product } from "../schemas";
+import type { Product } from "@/hooks/use-products";
 
 type ProductGridProps = {
   error: unknown;

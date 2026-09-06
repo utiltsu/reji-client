@@ -2,24 +2,6 @@ import { z } from "zod";
 
 export const paymentMethodSchema = z.enum(["CASH", "PROMPTPAY"]);
 
-export const productSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  price: z.number().int().nonnegative(),
-  imageUrl: z.string().url().nullable(),
-  active: z.boolean(),
-});
-
-export const productListResponseSchema = z.object({
-  data: z.array(productSchema),
-  meta: z.object({
-    limit: z.number().int(),
-    page: z.number().int(),
-    total: z.number().int(),
-    totalPages: z.number().int(),
-  }),
-});
-
 export const openCashSessionInputSchema = z.object({
   openingFloat: z.number().int().min(0).max(2147483647),
 });
@@ -120,7 +102,6 @@ export type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
 export type CloseCashSessionFormValues = z.infer<typeof closeCashSessionFormSchema>;
 export type CreateSaleInput = z.infer<typeof createSaleInputSchema>;
 export type OpenCashSessionFormValues = z.infer<typeof openCashSessionFormSchema>;
-export type Product = z.infer<typeof productSchema>;
 export type Sale = z.infer<typeof saleSchema>;
 export type PaymentMethod = z.infer<typeof paymentMethodSchema>;
 export type Receipt = z.infer<typeof receiptResponseSchema>;

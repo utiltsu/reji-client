@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import type { Product } from "@/hooks/use-products";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -20,7 +21,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { applyApiErrorToForm, getApiErrorMessage } from "@/lib/errors";
 import { formatCurrency, formatDateTime } from "@/lib/format";
 import { useCreateSale } from "../hooks/use-create-sale";
-import { checkoutFormSchema, type CheckoutFormValues, type Product, type Sale } from "../schemas";
+import { checkoutFormSchema, type CheckoutFormValues, type Sale } from "../schemas";
 
 type CheckoutLine = {
   product: Product;

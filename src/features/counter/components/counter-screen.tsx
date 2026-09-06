@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { useProducts } from "@/hooks/use-products";
 import { CloseSessionForm } from "./close-session-form";
 import { CheckoutPanel } from "./checkout-panel";
 import { OpenSessionForm } from "./open-session-form";
@@ -10,9 +11,7 @@ import { ProductGrid } from "./product-grid";
 import { useCart } from "../hooks/use-cart";
 import { useCloseCashSession } from "../hooks/use-close-cash-session";
 import { useOpenCashSession } from "../hooks/use-open-cash-session";
-import { useProducts } from "../hooks/use-products";
-import { bahtToSatang } from "../utils";
-import { formatCurrency, formatDateTime } from "@/lib/format";
+import { bahtToSatang, formatCurrency, formatDateTime } from "@/lib/format";
 import type { CloseCashSessionFormValues, OpenCashSessionFormValues } from "../schemas";
 
 export function CounterScreen() {

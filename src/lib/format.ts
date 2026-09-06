@@ -18,3 +18,8 @@ export function formatCurrency(amountInSatang: number) {
 export function formatDateTime(value: string) {
   return DATE_TIME_FORMATTER.format(new Date(value));
 }
+
+export function bahtToSatang(value: string) {
+  const [wholePart, fractionPart = ""] = value.trim().split(".");
+  return Number(wholePart) * 100 + Number(fractionPart.padEnd(2, "0"));
+}

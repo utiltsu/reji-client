@@ -5,21 +5,14 @@ import {
   closeCashSessionInputSchema,
   createSaleInputSchema,
   openCashSessionInputSchema,
-  productListResponseSchema,
   receiptResponseSchema,
   saleSchema,
   type CashSession,
   type CashSessionCloseResponse,
   type CreateSaleInput,
-  type Product,
   type Receipt,
   type Sale,
 } from "./schemas";
-
-export async function getProducts(): Promise<Product[]> {
-  const response: unknown = await apiClient<unknown>("/api/bff/products?page=1&limit=100");
-  return productListResponseSchema.parse(response).data;
-}
 
 export async function openCashSession(input: { openingFloat: number }): Promise<CashSession> {
   const payload = openCashSessionInputSchema.parse(input);
