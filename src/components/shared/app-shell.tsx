@@ -26,7 +26,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarSeparator,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import type { RejiRole } from "@/features/auth/schemas";
@@ -75,7 +74,7 @@ export function AppShell({ children, name, role }: AppShellProps) {
           </SidebarMenu>
         </SidebarHeader>
 
-        <SidebarSeparator />
+        <div aria-hidden="true" className="mx-2 h-px bg-sidebar-border" />
 
         <SidebarContent>
           <SidebarGroup>
