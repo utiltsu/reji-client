@@ -53,6 +53,10 @@ Screens are **client-first**: Client Components reading server state through Tan
    `components/ui/` you may edit `cva` variants and token classes only — never add props,
    state, or logic; wrap the component in `components/shared/` instead.
 
+   All form controls use shadcn/ui primitives. Feature components must not render raw
+   `<input>`, `<textarea>`, `<select>`, checkbox, or radio controls directly. Use the shadcn
+   form primitives with react-hook-form.
+
 9. **Handle all four states** for anything reading server data: loading (a `<Skeleton>` shaped
    like the content — not a spinner, not `Loading...`), error (inline, with a retry calling
    `refetch()`), empty (the shared `<EmptyState>`), content.

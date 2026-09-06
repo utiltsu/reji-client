@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { ApiError } from "@/lib/errors";
 import { useLogin } from "../hooks/use-login";
 
@@ -30,13 +32,14 @@ export function LoginScreen() {
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">PIN</span>
-            <input
+          <div className="space-y-2">
+            <Label htmlFor="pin">PIN</Label>
+            <Input
               aria-describedby={errorMessage ? "login-error" : undefined}
               aria-invalid={Boolean(errorMessage)}
               autoComplete="one-time-code"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-center text-2xl tracking-[0.5em] outline-none transition focus:border-amber-600 focus:ring-2 focus:ring-amber-100"
+              className="h-12 text-center text-2xl tracking-[0.5em]"
+              id="pin"
               inputMode="numeric"
               maxLength={4}
               onChange={(event) => setPin(event.target.value.replace(/\D/g, "").slice(0, 4))}
@@ -44,7 +47,7 @@ export function LoginScreen() {
               type="password"
               value={pin}
             />
-          </label>
+          </div>
 
           {errorMessage ? (
             <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800" id="login-error">
