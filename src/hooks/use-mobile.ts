@@ -1,16 +1,20 @@
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
-const MEDIA_QUERY = `(max-width: ${MOBILE_BREAKPOINT - 1}px)`
 
 export function useIsMobile() {
-  return React.useSyncExternalStore(
-    (onStoreChange) => {
-      const mediaQuery = window.matchMedia(MEDIA_QUERY)
-      mediaQuery.addEventListener("change", onStoreChange)
-      return () => mediaQuery.removeEventListener("change", onStoreChange)
-    },
-    () => window.matchMedia(MEDIA_QUERY).matches,
-    () => false,
-  )
+  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
+    const handleChange = () => setIsMobile(mediaQuery.matches)
+
+    mediaQuery.addEventListener("change", handleChange)
+    // This initializes a browser-only subscription after hydration.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMobile(mediaQuery.matches)
+    return () => mediaQuery.removeEventListener("change", handleChange)
+  }, [])
+
+  return Boolean(isMobile)
 }
