@@ -1,8 +1,16 @@
 "use client";
 
-import { Package, RefreshCw } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Package, RefreshCw, Search, X } from "lucide-react";
 import { ProductImage } from "@/components/shared/product-image";
 import { Button } from "@/components/ui/button";
+import { Field, FieldLabel } from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
 import { getApiErrorMessage } from "@/lib/errors";
@@ -19,6 +27,16 @@ type ProductGridProps = {
 };
 
 export function ProductGrid({ error, isDisabled = false, isLoading, onAddProduct, onRetry, products }: ProductGridProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const normalizedSearchTerm = searchTerm.trim().toLocaleLowerCase();
+  const filteredProducts = useMemo(
+    () =>
+      normalizedSearchTerm
+        ? products.filter((product) => product.name.toLocaleLowerCase().includes(normalizedSearchTerm))
+        : products,
+    [normalizedSearchTerm, products],
+  );
+
   if (isLoading) {
     return (
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -47,28 +65,59 @@ export function ProductGrid({ error, isDisabled = false, isLoading, onAddProduct
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {products.map((product) => (
-        <Button
-          className="h-auto min-h-48 flex-col items-start justify-between gap-4 whitespace-normal p-5 text-left"
-          disabled={isDisabled}
-          key={product.id}
-          onClick={() => onAddProduct(product.id)}
-          variant="outline"
-        >
-          <span className="flex w-full items-center justify-between gap-3">
-            {product.imageUrl ? (
-              <ProductImage alt={product.name} className="size-14" src={product.imageUrl} />
-            ) : (
-              <span className="flex size-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Package />
+    <div className="space-y-4">
+      <Field>
+        <FieldLabel className="sr-only" htmlFor="counter-product-search">
+          Search products
+        </FieldLabel>
+        <InputGroup>
+          <InputGroupAddon>
+            <Search aria-hidden="true" />
+          </InputGroupAddon>
+          <InputGroupInput
+            id="counter-product-search"
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Search products by name"
+            type="search"
+            value={searchTerm}
+          />
+          {searchTerm ? (
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton aria-label="Clear product search" onClick={() => setSearchTerm("")} size="icon-xs">
+                <X />
+              </InputGroupButton>
+            </InputGroupAddon>
+          ) : null}
+        </InputGroup>
+      </Field>
+
+      {filteredProducts.length === 0 ? (
+        <EmptyState description="Try a different product name." title="No matching products" />
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {filteredProducts.map((product) => (
+            <Button
+              className="h-auto min-h-48 flex-col items-start justify-between gap-4 whitespace-normal p-5 text-left"
+              disabled={isDisabled}
+              key={product.id}
+              onClick={() => onAddProduct(product.id)}
+              variant="outline"
+            >
+              <span className="flex w-full items-center justify-between gap-3">
+                {product.imageUrl ? (
+                  <ProductImage alt={product.name} className="size-14" src={product.imageUrl} />
+                ) : (
+                  <span className="flex size-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Package />
+                  </span>
+                )}
+                <span className="text-base font-semibold text-foreground">{formatCurrency(product.price)}</span>
               </span>
-            )}
-            <span className="text-base font-semibold text-foreground">{formatCurrency(product.price)}</span>
-          </span>
-          <span className="w-full text-base font-medium text-foreground">{product.name}</span>
-        </Button>
-      ))}
+              <span className="w-full text-base font-medium text-foreground">{product.name}</span>
+            </Button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
