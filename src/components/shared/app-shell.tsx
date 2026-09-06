@@ -84,7 +84,7 @@ export function AppShell({ children, name, role }: AppShellProps) {
           </SidebarMenu>
         </SidebarHeader>
 
-        <div aria-hidden="true" className="mx-2 h-px bg-sidebar-border" />
+        <div aria-hidden="true" className="h-px bg-sidebar-border" />
 
         <SidebarContent>
           <SidebarGroup>
