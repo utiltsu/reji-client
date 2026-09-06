@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExternalLink, Minus, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -181,6 +182,31 @@ function SaleCompleted({ onStartNewSale, sale }: SaleCompletedProps) {
           <span>{formatCurrency(sale.total)}</span>
         </div>
       </div>
+      {sale.paymentMethod === "PROMPTPAY" ? (
+        sale.promptpayQrPayload ? (
+          <div className="rounded-xl border bg-white p-4 text-center">
+            <p className="font-medium text-foreground">Scan to pay with PromptPay</p>
+            <div className="mt-4 flex justify-center">
+              <QRCodeSVG
+                bgColor="#ffffff"
+                fgColor="#111827"
+                includeMargin
+                level="M"
+                size={220}
+                title={`PromptPay QR for ${formatCurrency(sale.total)}`}
+                value={sale.promptpayQrPayload}
+              />
+            </div>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Payment is not confirmed automatically. Verify payment before handing over the order.
+            </p>
+          </div>
+        ) : (
+          <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800" role="alert">
+            The PromptPay QR code is unavailable for this sale.
+          </p>
+        )
+      ) : null}
       {sale.stockWarning ? (
         <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800" role="status">
           This sale was accepted, but recorded production quantity may be lower than completed sales.
