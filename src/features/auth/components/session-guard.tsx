@@ -10,9 +10,10 @@ import type { AuthenticatedSession, Session } from "../schemas";
 
 type SessionGuardProps = {
   children: ReactNode;
+  requiredRole?: AuthenticatedSession["role"];
 };
 
-export function SessionGuard({ children }: SessionGuardProps) {
+export function SessionGuard({ children, requiredRole }: SessionGuardProps) {
   const session = useSession();
   const sessionData = session.data;
 
@@ -47,6 +48,21 @@ export function SessionGuard({ children }: SessionGuardProps) {
   }
 
   const authenticatedSession = sessionData;
+
+  if (requiredRole && authenticatedSession.role !== requiredRole) {
+    return (
+      <main className="flex min-h-screen items-center justify-center px-6">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+          <p className="font-medium text-slate-900">Owner access required.</p>
+          <p className="mt-2 text-sm text-slate-600">You do not have permission to manage products.</p>
+          <Link className="mt-4 inline-block text-sm font-medium text-amber-700 underline" href="/counter">
+            Return to counter
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <AppShell name={authenticatedSession.name} role={authenticatedSession.role}>
       {children}

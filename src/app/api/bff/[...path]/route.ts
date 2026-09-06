@@ -8,7 +8,7 @@ type RouteContext = { params: Promise<{ path: string[] }> };
 async function proxy(request: Request, context: RouteContext) {
   const { path } = await context.params;
   const resourcePath = path.join("/");
-  if (!isAllowedBffPath(resourcePath)) return NextResponse.json({ message: "Route not found" }, { status: 404 });
+  if (!isAllowedBffPath(resourcePath, request.method)) return NextResponse.json({ message: "Route not found" }, { status: 404 });
   const requestUrl = new URL(request.url);
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("reji-access-token")?.value;

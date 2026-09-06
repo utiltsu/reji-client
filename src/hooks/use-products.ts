@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { apiClient } from "@/lib/api-client";
 
-const productSchema = z.object({
+export const productSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
   price: z.number().int().nonnegative(),

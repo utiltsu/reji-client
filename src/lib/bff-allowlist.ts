@@ -11,7 +11,7 @@ export const BFF_ALLOWLIST = [
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const RECEIPT_TOKEN_PATTERN = /^[A-Za-z0-9_-]+$/;
 
-export function isAllowedBffPath(path: string) {
+export function isAllowedBffPath(path: string, method = "GET") {
   const segments = path.split("/");
   const resource = segments[0];
 
@@ -28,7 +28,11 @@ export function isAllowedBffPath(path: string) {
   }
 
   if (resource === "sessions" && segments.length === 2 && segments[1] === "current") {
-    return true;
+    return method === "GET";
+  }
+
+  if (resource === "products" && segments.length === 2) {
+    return method === "PATCH" && UUID_PATTERN.test(segments[1] ?? "");
   }
 
   return (
