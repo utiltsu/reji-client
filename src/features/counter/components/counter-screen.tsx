@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ export function CounterScreen() {
   const currentSession = useCurrentCashSession();
   const openSession = useOpenCashSession();
   const closeSession = useCloseCashSession();
+  const [isCartLocked, setIsCartLocked] = useState(false);
   const session = currentSession.data;
 
   const cartItems = useMemo(
@@ -51,6 +52,7 @@ export function CounterScreen() {
       sessionId: session.id,
     });
     cart.clear();
+    setIsCartLocked(false);
     toast.success("Cash session closed");
   }
 
@@ -58,6 +60,12 @@ export function CounterScreen() {
     closeSession.reset();
     openSession.reset();
     cart.clear();
+    setIsCartLocked(false);
+  }
+
+  function handleClearCart() {
+    cart.clear();
+    setIsCartLocked(false);
   }
 
   if (currentSession.isLoading) {
@@ -144,6 +152,7 @@ export function CounterScreen() {
           <h2 className="mb-4 text-lg font-semibold text-foreground">Products</h2>
           <ProductGrid
             error={products.error}
+            isDisabled={isCartLocked}
             isLoading={products.isLoading}
             onAddProduct={cart.addProduct}
             onRetry={products.refetch}
@@ -152,10 +161,12 @@ export function CounterScreen() {
         </section>
         <aside className="h-fit rounded-2xl border bg-card p-5 shadow-sm">
           <CheckoutPanel
+            isCartLocked={isCartLocked}
             items={cartItems}
             onAddProduct={cart.addProduct}
-            onClear={cart.clear}
+            onClear={handleClearCart}
             onDecreaseProduct={cart.decreaseProduct}
+            onLockCart={setIsCartLocked}
             onRemoveProduct={cart.removeProduct}
             total={total}
           />

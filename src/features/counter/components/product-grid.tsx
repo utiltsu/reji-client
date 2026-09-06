@@ -11,13 +11,14 @@ import type { Product } from "@/hooks/use-products";
 
 type ProductGridProps = {
   error: unknown;
+  isDisabled?: boolean;
   isLoading: boolean;
   onAddProduct: (productId: string) => void;
   onRetry: () => Promise<unknown>;
   products: Product[];
 };
 
-export function ProductGrid({ error, isLoading, onAddProduct, onRetry, products }: ProductGridProps) {
+export function ProductGrid({ error, isDisabled = false, isLoading, onAddProduct, onRetry, products }: ProductGridProps) {
   if (isLoading) {
     return (
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -50,6 +51,7 @@ export function ProductGrid({ error, isLoading, onAddProduct, onRetry, products 
       {products.map((product) => (
         <Button
           className="h-auto min-h-48 flex-col items-start justify-between gap-4 whitespace-normal p-5 text-left"
+          disabled={isDisabled}
           key={product.id}
           onClick={() => onAddProduct(product.id)}
           variant="outline"

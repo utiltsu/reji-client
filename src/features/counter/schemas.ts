@@ -51,9 +51,20 @@ export const saleLineItemInputSchema = z.object({
   discount: z.number().int().min(0).optional(),
 });
 
-export const createSaleInputSchema = z.object({
-  paymentMethod: paymentMethodSchema,
+export const createSaleInputSchema = z.union([
+  z.object({
+    paymentMethod: z.literal("CASH"),
+    lineItems: z.array(saleLineItemInputSchema).min(1),
+  }),
+  z.object({
+    checkoutToken: z.string().uuid(),
+    paymentMethod: z.literal("PROMPTPAY"),
+  }),
+]);
+
+export const preparePromptPayCheckoutInputSchema = z.object({
   lineItems: z.array(saleLineItemInputSchema).min(1),
+  paymentMethod: z.literal("PROMPTPAY"),
 });
 
 export const saleLineItemSchema = z.object({
@@ -75,6 +86,23 @@ export const saleSchema = z.object({
   stockWarning: z.boolean().optional(),
   lineItems: z.array(saleLineItemSchema),
   cancelledReason: z.string().optional(),
+});
+
+export const promptPayCheckoutPreparationLineSchema = z.object({
+  productId: z.string().uuid(),
+  productName: z.string(),
+  quantity: z.number().int().min(1),
+  unitPrice: z.number().int().nonnegative(),
+  discount: z.number().int().nonnegative(),
+});
+
+export const promptPayCheckoutPreparationSchema = z.object({
+  checkoutToken: z.string().uuid(),
+  expiresAt: z.string().datetime(),
+  total: z.number().int().nonnegative(),
+  paymentMethod: z.literal("PROMPTPAY"),
+  promptpayQrPayload: z.string().min(1),
+  lineItems: z.array(promptPayCheckoutPreparationLineSchema).min(1),
 });
 
 export const receiptResponseSchema = z.object({
@@ -101,7 +129,9 @@ export type CashSessionCloseResponse = z.infer<typeof cashSessionCloseResponseSc
 export type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
 export type CloseCashSessionFormValues = z.infer<typeof closeCashSessionFormSchema>;
 export type CreateSaleInput = z.infer<typeof createSaleInputSchema>;
+export type PreparePromptPayCheckoutInput = z.infer<typeof preparePromptPayCheckoutInputSchema>;
 export type OpenCashSessionFormValues = z.infer<typeof openCashSessionFormSchema>;
+export type PromptPayCheckoutPreparation = z.infer<typeof promptPayCheckoutPreparationSchema>;
 export type Sale = z.infer<typeof saleSchema>;
 export type PaymentMethod = z.infer<typeof paymentMethodSchema>;
 export type Receipt = z.infer<typeof receiptResponseSchema>;

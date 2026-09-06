@@ -1,6 +1,11 @@
 import type { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 
 const API_ERROR_MESSAGES: Record<string, string> = {
+  CHECKOUT_ALREADY_SUBMITTED: "This PromptPay checkout was already submitted.",
+  CHECKOUT_EXPIRED: "This PromptPay QR has expired. Generate a new QR.",
+  CHECKOUT_NOT_FOUND: "This PromptPay checkout is no longer available. Generate a new QR.",
+  CHECKOUT_TOKEN_REQUIRED: "Generate a PromptPay QR before submitting the sale.",
+  INVALID_CHECKOUT_REQUEST: "The checkout details are invalid. Review the cart and try again.",
   LEFTOVERS_NOT_RECONCILED: "Record the day's leftovers before closing this session.",
   NO_OPEN_SESSION: "Open a cash session before checking out a sale.",
   PRODUCT_NOT_FOUND: "One of the selected products is no longer available.",

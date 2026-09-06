@@ -35,6 +35,10 @@ export function isAllowedBffPath(path: string, method = "GET") {
     return method === "PATCH" && UUID_PATTERN.test(segments[1] ?? "");
   }
 
+  if (resource === "sales" && segments.length === 2 && segments[1] === "prepare") {
+    return method === "POST";
+  }
+
   return (
     segments.length === 3 &&
     UUID_PATTERN.test(segments[1] ?? "") &&

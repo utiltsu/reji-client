@@ -5,11 +5,15 @@ import {
   closeCashSessionInputSchema,
   createSaleInputSchema,
   openCashSessionInputSchema,
+  preparePromptPayCheckoutInputSchema,
+  promptPayCheckoutPreparationSchema,
   receiptResponseSchema,
   saleSchema,
   type CashSession,
   type CashSessionCloseResponse,
   type CreateSaleInput,
+  type PreparePromptPayCheckoutInput,
+  type PromptPayCheckoutPreparation,
   type Receipt,
   type Sale,
 } from "./schemas";
@@ -47,6 +51,17 @@ export async function createSale(input: CreateSaleInput): Promise<Sale> {
     method: "POST",
   });
   return saleSchema.parse(response);
+}
+
+export async function preparePromptPayCheckout(
+  input: PreparePromptPayCheckoutInput,
+): Promise<PromptPayCheckoutPreparation> {
+  const payload = preparePromptPayCheckoutInputSchema.parse(input);
+  const response: unknown = await apiClient<unknown>("/api/bff/sales/prepare", {
+    body: JSON.stringify(payload),
+    method: "POST",
+  });
+  return promptPayCheckoutPreparationSchema.parse(response);
 }
 
 export async function getReceipt(token: string): Promise<Receipt> {
