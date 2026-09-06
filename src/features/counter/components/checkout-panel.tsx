@@ -187,7 +187,7 @@ function SaleCompleted({ onStartNewSale, sale }: SaleCompletedProps) {
         </p>
       ) : null}
       <div className="flex flex-col gap-2">
-        <Button render={<Link href={sale.receiptUrl} target="_blank" />} variant="outline">
+        <Button nativeButton={false} render={<Link href={sale.receiptUrl} target="_blank" />} variant="outline">
           <ExternalLink />
           Open receipt
         </Button>
