@@ -56,9 +56,9 @@ type NavItem = {
 
 const navItems: readonly NavItem[] = [
   { href: "/counter", icon: ShoppingCart, label: "Counter", roles: ["OWNER", "CASHIER"] },
+  { href: "/production", icon: ChefHat, label: "Inventory", roles: ["OWNER", "CASHIER"] },
   { href: "/day-end", icon: CalendarDays, label: "Day end", roles: ["OWNER", "CASHIER"] },
   { href: "/catalog", icon: Package, label: "Products", roles: ["OWNER"] },
-  { href: "/production", icon: ChefHat, label: "Production", roles: ["OWNER", "CASHIER"] },
   { href: "/expenses", icon: WalletCards, label: "Expenses", roles: ["OWNER"] },
   { href: "/reports", icon: BarChart3, label: "Reports", roles: ["OWNER"] },
 ];
