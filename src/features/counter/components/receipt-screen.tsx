@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
 import { getApiErrorMessage } from "@/lib/errors";
+import { clientEnv } from "@/lib/env";
 import { formatCurrency, formatDateTime } from "@/lib/format";
 import { useReceipt } from "../hooks/use-receipt";
 
@@ -57,7 +58,7 @@ export function ReceiptScreen({ token }: ReceiptScreenProps) {
     <main className="min-h-screen bg-muted/30 px-6 py-10">
       <section className="mx-auto w-full max-w-lg rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
         <div className="text-center">
-          <p className="text-sm font-medium text-primary">Reji receipt</p>
+          <p className="text-sm font-medium text-primary">{clientEnv.NEXT_PUBLIC_APP_NAME} receipt</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
             {isCancelled ? "Cancelled sale" : "Thank you"}
           </h1>
