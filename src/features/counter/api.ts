@@ -23,6 +23,11 @@ export async function openCashSession(input: { openingFloat: number }): Promise<
   return cashSessionSchema.parse(response);
 }
 
+export async function getCurrentCashSession(): Promise<CashSession | null> {
+  const response: unknown = await apiClient<unknown>("/api/bff/sessions/current");
+  return cashSessionSchema.nullable().parse(response);
+}
+
 export async function closeCashSession(
   sessionId: string,
   input: { closingCountedCash: number },

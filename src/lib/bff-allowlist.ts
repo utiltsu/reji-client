@@ -27,6 +27,10 @@ export function isAllowedBffPath(path: string) {
     return true;
   }
 
+  if (resource === "sessions" && segments.length === 2 && segments[1] === "current") {
+    return true;
+  }
+
   return (
     segments.length === 3 &&
     UUID_PATTERN.test(segments[1] ?? "") &&

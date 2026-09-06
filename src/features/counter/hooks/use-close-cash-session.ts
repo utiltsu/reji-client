@@ -1,8 +1,17 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { closeCashSession } from "../api";
+import { counterKeys } from "../query-keys";
 
 export function useCloseCashSession() {
-  return useMutation({ mutationFn: ({ sessionId, closingCountedCash }: { sessionId: string; closingCountedCash: number }) => closeCashSession(sessionId, { closingCountedCash }) });
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ sessionId, closingCountedCash }: { sessionId: string; closingCountedCash: number }) =>
+      closeCashSession(sessionId, { closingCountedCash }),
+    onSuccess: () => {
+      queryClient.setQueryData(counterKeys.currentSession(), null);
+    },
+  });
 }

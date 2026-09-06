@@ -1,15 +1,19 @@
 "use client";
 
 import { useMemo } from "react";
+import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useProducts } from "@/hooks/use-products";
+import { getApiErrorMessage } from "@/lib/errors";
 import { CloseSessionForm } from "./close-session-form";
 import { CheckoutPanel } from "./checkout-panel";
 import { OpenSessionForm } from "./open-session-form";
 import { ProductGrid } from "./product-grid";
 import { useCart } from "../hooks/use-cart";
 import { useCloseCashSession } from "../hooks/use-close-cash-session";
+import { useCurrentCashSession } from "../hooks/use-current-cash-session";
 import { useOpenCashSession } from "../hooks/use-open-cash-session";
 import { bahtToSatang, formatCurrency, formatDateTime } from "@/lib/format";
 import type { CloseCashSessionFormValues, OpenCashSessionFormValues } from "../schemas";
@@ -17,9 +21,10 @@ import type { CloseCashSessionFormValues, OpenCashSessionFormValues } from "../s
 export function CounterScreen() {
   const cart = useCart();
   const products = useProducts();
+  const currentSession = useCurrentCashSession();
   const openSession = useOpenCashSession();
   const closeSession = useCloseCashSession();
-  const session = openSession.data;
+  const session = currentSession.data;
 
   const cartItems = useMemo(
     () =>
@@ -53,6 +58,33 @@ export function CounterScreen() {
     closeSession.reset();
     openSession.reset();
     cart.clear();
+  }
+
+  if (currentSession.isLoading) {
+    return (
+      <div className="mx-auto w-full max-w-2xl space-y-5 px-6 py-10">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-5 w-full max-w-xl" />
+        <Skeleton className="h-56 w-full" />
+      </div>
+    );
+  }
+
+  if (currentSession.isError) {
+    return (
+      <div className="mx-auto w-full max-w-2xl px-6 py-10">
+        <section className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6" role="alert">
+          <p className="font-medium text-destructive">Cash session status could not be loaded.</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {getApiErrorMessage(currentSession.error, "Please try again.")}
+          </p>
+          <Button className="mt-4" onClick={() => void currentSession.refetch()} size="sm" variant="outline">
+            <RefreshCw />
+            Try again
+          </Button>
+        </section>
+      </div>
+    );
   }
 
   if (!session) {
