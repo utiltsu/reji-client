@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { RejiRole } from "@/features/auth/schemas";
+import { clientEnv } from "@/lib/env";
+import { AppLogo } from "./app-logo";
 
 type AppShellProps = {
   children: ReactNode;
@@ -15,8 +17,8 @@ export function AppShell({ children, name, role }: AppShellProps) {
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
-          <Link className="text-xl font-semibold tracking-tight text-slate-900" href="/counter">
-            Reji
+          <Link aria-label={`${clientEnv.NEXT_PUBLIC_APP_NAME} home`} href="/counter">
+            <AppLogo />
           </Link>
           <div className="flex items-center gap-4 text-sm text-slate-600">
             <span>{name}</span>

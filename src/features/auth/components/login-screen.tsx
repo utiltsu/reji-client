@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AppLogo } from "@/components/shared/app-logo";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -26,7 +27,7 @@ export function LoginScreen() {
     <main className="flex min-h-screen items-center justify-center bg-amber-50 px-6 py-12">
       <section className="w-full max-w-sm rounded-3xl border border-amber-100 bg-white p-8 shadow-sm">
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">Reji</p>
+          <AppLogo />
           <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">Sign in</h1>
           <p className="mt-2 text-sm text-slate-600">Enter your 4-digit PIN to start using the counter.</p>
         </div>
